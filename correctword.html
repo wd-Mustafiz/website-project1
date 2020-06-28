@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Piedra&family=Yatra+One&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header{
+            width: 100%;
+            line-height: 15vh;
+            background-color: #20bf6b;
+        }
+
+        h1{
+            text-align: center;
+            color : rgb(51, 51, 51);
+            font-size: 2.2rem;
+            font-family: 'Piedra', cursive;
+            letter-spacing: 10px;
+            text-shadow: 0 1px 0 #efefef ,
+                        0 2px 0 #efefef ,
+                        0 3px 0 #efefef ,
+                        0 4px 0 #efefef ,
+                        0 30px 5px rgba(0,0,0,.1)  ;
+        }
+
+        section{
+            height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #7bed9f;
+        }
+
+        .game-area{
+            width: 50%;
+            height: 400px;
+            padding: 20px 0;
+            background-color: #2ed573;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 0 8px 40px -6px black;
+            font-family: 'Yatra One', cursive;
+        }
+
+        h3{
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        input{
+            width: 50%;
+            text-align: center;
+            padding: 15px 0;
+            border-radius: 25px;
+            outline: none;
+            border: none;
+            background-color: #dff9fd;
+            color: black;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+        }
+
+        button{
+            font-size:  1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            outline: none;
+            border: #2f3542;
+            color: #eb4d4d;
+        }
+
+        button.btn{
+            font-weight: bold;
+            padding: 1rem 2rem;
+            background-color: white;
+            text-transform: uppercase;
+            transition-property: all;
+            transition-duration: .5s;
+            transition-timing-function: cubic-bezier(0.65,-0.25,0.25,1.95);
+        }
+
+        button.btn:hover , button.btn:focus , button.btn:active{
+            letter-spacing: 0.125rem;
+            word-spacing: .2rem;
+        }
+
+        .hidden{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Geuss The Word</h1>
+    </header>
+
+    <section>
+        <div class="game-area">
+            <h3 class="msg">
+
+            </h3>
+    
+            <input type="text" class="hidden">
+    
+            <button class="btn">clike here to start</button>
+        </div>
+    </section>
+
+
+
+
+    <script>
+        const massage = document.querySelector('.msg');
+        const gess = document.querySelector('input');
+        const btn = document.querySelector('.btn');
+        let play = false;
+        let newWords = "";
+        let ranWords = "";
+
+        let swords = ['java' , 'phyton' , 'cobal' , 'javascript' , 'html' , 'css' , 'bootstrap' , 'mysql' , 'database' , 'define' , 'php'];
+
+        const creatWord = () => {
+            let ranNum = Math.floor((Math.random() * swords.length)) ;
+            //console.log(ranNum);
+
+            let tempWords = swords[ranNum];
+            //console.log(tempWords.split(""));
+            return tempWords ;
+
+        }
+
+        const scramble = (arr) => {
+            for(let i = arr.length - 1; i>=0 ; i--){
+                let temp = arr[i];
+                //console.log(temp);
+                let j = Math.floor(Math.random() * (i));
+
+                arr[i] = arr[j];
+                arr[j] = temp ;
+
+            }
+            return arr ;
+        }
+
+        btn.addEventListener('click' , function(){
+            if(!play){
+                play = true ;
+                btn.innerHTML = "Geuss" ;
+                gess.classList.toggle('hidden');
+
+                newWords = creatWord();
+                ranWords = scramble(newWords.split("")).join("");
+                massage.innerHTML = `Geuss the word : ${ranWords}` ;
+            }else{
+                let typedWord = gess.value ;
+
+                if(newWords === typedWord){
+                    play = false ;
+                    massage.innerHTML = `Awsome it is ${newWords}`;
+                    btn.innerHTML = `Start again`;
+                    gess.classList.toggle('hidden');
+                    gess.value = "" ;
+                }else{
+                    massage.innerHTML = `Sorry boss it is incorrect.plz try again: ${ranWords}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
